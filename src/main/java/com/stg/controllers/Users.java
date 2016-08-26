@@ -1,5 +1,8 @@
 package com.stg.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.data.rest.webmvc.RepositorySearchesResource;
@@ -37,23 +40,37 @@ public class Users implements ResourceProcessor<RepositorySearchesResource>,
     public ResponseEntity<Resource<User>> getAllUsers(@RequestBody User user)
 	    throws Exception {
 	User existingUser = userDao.findByEmail(user.getEmail());
+	String subject = null;
+	String templateName = null;
+	Map<String, Object> templateMap = new HashMap<String, Object>();
 
 	if (existingUser != null) {
 	    user = existingUser;
-	    // TODO: Send Welcome Back Email
-	    try {
-		mailHelper.sendMail();
-	    } catch (Exception e) {
-		e.printStackTrace();
-		throw e;
-	    }
-	} else {
-	    // TODO: Save user
-	    System.out.println(user);
-	    userDao.save(user);
-	    System.out.println(existingUser);
 
-	    // TODO: Send Welcome Email
+	    // Set the welcome back email
+	    subject = "Welcome Back!";
+	    templateName = "welcome-back";
+	} else {
+	    // Save user
+	    userDao.save(user);
+
+	    // Set the welcome email
+	    subject = "Welcome!";
+	    templateName = "welcome";
+
+	}
+
+	// Set the configurations
+	templateMap.put("emailAddress", user.getEmail());
+	templateMap.put("userName",
+		user.getFirstName() + " " + user.getLastName());
+
+	try {
+	    mailHelper.sendMail(user.getEmail(), subject, templateName,
+		    templateMap);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    throw e;
 	}
 
 	try {

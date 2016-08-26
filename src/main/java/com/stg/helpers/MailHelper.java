@@ -1,5 +1,7 @@
 package com.stg.helpers;
 
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -8,10 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.stg.daos.ConfigDao;
 import com.stg.models.Config;
+
+import freemarker.template.Configuration;
 
 @Component
 public class MailHelper {
@@ -20,6 +26,9 @@ public class MailHelper {
 
     @Autowired
     private ConfigDao configDao;
+
+    @Autowired
+    private Configuration freemarkerEngine;
 
     @PostConstruct
     public void init() {
@@ -43,17 +52,28 @@ public class MailHelper {
 	}
     }
 
-    public void sendMail() throws MessagingException {
+    public void sendMail(String toAddress, String subject, String templateName,
+	    Map<String, Object> params) throws MessagingException {
 	// TODO: Change this to use the emails found in the database
-	MimeMessage mail = mailSender.createMimeMessage();
 
-	MimeMessageHelper helper = new MimeMessageHelper(mail, true);
-	helper.setTo("david@landesapps.com");
-	helper.setReplyTo("david.landes@stgconsulting.com");
-	helper.setFrom("david.landes@stgconsulting.com");
-	helper.setSubject("Email Test");
-	helper.setText("YAY!");
+	MimeMessagePreparator preparator = new MimeMessagePreparator() {
+	    @Override
+	    public void prepare(MimeMessage mimeMessage) throws Exception {
+		MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+		message.setTo(toAddress);
+		message.setFrom(
+			((JavaMailSenderImpl) mailSender).getUsername());
+		message.setSubject(subject);
 
-	mailSender.send(mail);
+		String text = FreeMarkerTemplateUtils
+			.processTemplateIntoString(
+				freemarkerEngine.getTemplate(
+					"/" + templateName + ".ftl", "UTF-8"),
+				params);
+
+		message.setText(text, true);
+	    }
+	};
+	mailSender.send(preparator);
     }
 }
