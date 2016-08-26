@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.rest.core.annotation.RestResource;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -26,10 +28,12 @@ public class User {
     @NotNull
     private String email;
 
+    @RestResource(exported = true)
     @ManyToOne
     @JoinColumn(name = "position_id")
     private Position position;
 
+    @RestResource(exported = true)
     @ManyToOne
     @JoinColumn(name = "practice_id")
     private Practice practice;

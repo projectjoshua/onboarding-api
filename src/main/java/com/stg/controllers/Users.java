@@ -44,6 +44,7 @@ public class Users implements ResourceProcessor<RepositorySearchesResource>,
 	String templateName = null;
 	Map<String, Object> templateMap = new HashMap<String, Object>();
 
+	// TODO: Move the emailing code to a spring task
 	if (existingUser != null) {
 	    user = existingUser;
 
