@@ -1,7 +1,6 @@
 <html>
     <body>
-        <h3>Hi ${userName}, welcome to the Chipping Sodbury On-the-Hill message boards!</h3>
-
+        <h3>Hi ${name}, welcome to the Dev Center!</h3>
         <div>
             Your email address is <a href="mailto:${emailAddress}">${emailAddress}</a>.
         </div>

@@ -1,5 +1,6 @@
 package com.stg.helpers;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +17,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.stg.daos.ConfigDao;
 import com.stg.models.Config;
+import com.stg.models.User;
 
 import freemarker.template.Configuration;
 
@@ -52,28 +54,45 @@ public class MailHelper {
 	}
     }
 
-    public void sendMail(String toAddress, String subject, String templateName,
-	    Map<String, Object> params) throws MessagingException {
-	// TODO: Change this to use the emails found in the database
-
+    public void sendMail(String toAddress, String subject, String templateName, Map<String, Object> params) throws MessagingException {
 	MimeMessagePreparator preparator = new MimeMessagePreparator() {
 	    @Override
 	    public void prepare(MimeMessage mimeMessage) throws Exception {
 		MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
 		message.setTo(toAddress);
-		message.setFrom(
-			((JavaMailSenderImpl) mailSender).getUsername());
+		message.setFrom(((JavaMailSenderImpl) mailSender).getUsername());
 		message.setSubject(subject);
 
-		String text = FreeMarkerTemplateUtils
-			.processTemplateIntoString(
-				freemarkerEngine.getTemplate(
-					"/" + templateName + ".ftl", "UTF-8"),
-				params);
+		String text = FreeMarkerTemplateUtils.processTemplateIntoString(freemarkerEngine.getTemplate("/" + templateName + ".ftl", "UTF-8"), params);
 
 		message.setText(text, true);
 	    }
 	};
 	mailSender.send(preparator);
+    }
+
+    public void sendWelcomeEmail(User user, boolean isExistingUser) throws Exception {
+	String subject = null;
+	String templateName = null;
+	Map<String, Object> templateMap = new HashMap<String, Object>();
+
+	if (isExistingUser) {
+	    subject = "Welcome Back!";
+	    templateName = "welcome";
+	} else {
+	    subject = "Welcome!";
+	    templateName = "welcome";
+	}
+
+	// Set the configurations
+	templateMap.put("emailAddress", user.getEmail());
+	templateMap.put("name", user.getFirstName() + " " + user.getLastName());
+
+	try {
+	    this.sendMail(user.getEmail(), subject, templateName, templateMap);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    throw e;
+	}
     }
 }

@@ -8,4 +8,5 @@ import com.stg.models.Practice;
 @RepositoryRestResource(exported = false)
 public interface PracticeDao extends CrudRepository<Practice, String> {
 
+    public Practice findByPractice(String practice);
 }

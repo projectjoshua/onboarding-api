@@ -8,4 +8,5 @@ import com.stg.models.Position;
 @RepositoryRestResource(exported = false)
 public interface PositionDao extends CrudRepository<Position, String> {
 
+    public Position findByPosition(String position);
 }
