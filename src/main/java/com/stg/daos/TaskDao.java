@@ -10,5 +10,11 @@ import com.stg.models.Task;
 @RepositoryRestResource(exported = true)
 public interface TaskDao extends CrudRepository<Task, String> {
 
+    /**
+     * Retrieves all tasks for a specific user
+     *
+     * @param userId
+     * @return List<Task>
+     */
     public List<Task> findByUserIdEquals(long userId);
 }

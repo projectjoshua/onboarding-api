@@ -21,6 +21,11 @@ import com.stg.models.User;
 
 import freemarker.template.Configuration;
 
+/**
+ * Class that handles the sending of emails
+ *
+ * @author David Landes
+ */
 @Component
 public class MailHelper {
     @Autowired
@@ -54,6 +59,15 @@ public class MailHelper {
 	}
     }
 
+    /**
+     * Sends the mail to the specified address using the subject, template name, and parameters to be passed to the template. The templates are found in the src/main/resources/templates directory
+     *
+     * @param toAddress
+     * @param subject
+     * @param templateName
+     * @param params
+     * @throws MessagingException
+     */
     public void sendMail(String toAddress, String subject, String templateName, Map<String, Object> params) throws MessagingException {
 	MimeMessagePreparator preparator = new MimeMessagePreparator() {
 	    @Override
@@ -71,6 +85,13 @@ public class MailHelper {
 	mailSender.send(preparator);
     }
 
+    /**
+     * Sends the welcome email based on the user and whether or not the user already exists. If the user already exists, it will send the welcome back version of the email.
+     *
+     * @param user
+     * @param isExistingUser
+     * @throws Exception
+     */
     public void sendWelcomeEmail(User user, boolean isExistingUser) throws Exception {
 	String subject = null;
 	String templateName = null;

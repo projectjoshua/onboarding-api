@@ -24,8 +24,10 @@ public class EmailTasks {
     @Autowired
     private ProfileDao profileDao;
 
+    /**
+     * Sends the welcome emails to all of the users that have a starting date of today
+     */
     @Scheduled(cron = "0 0 5 * * MON-FRI")
-    // @Scheduled(cron = "0 */5 * * * MON-FRI")
     public void sendOnboardingEmails() {
 	log.info("Starting sendOnboardingEmails");
 

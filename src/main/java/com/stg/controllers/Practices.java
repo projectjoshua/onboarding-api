@@ -18,10 +18,14 @@ public class Practices {
     @Autowired
     private PracticeDao practiceDao;
 
+    /**
+     * Retrieves all of the different practices
+     *
+     * @return Iterable<Practice>
+     */
     @RequestMapping(value = "", method = RequestMethod.GET)
     public HttpEntity<Iterable<Practice>> getAllPractices() {
-	return new ResponseEntity<Iterable<Practice>>(practiceDao.findAll(),
-		HttpStatus.OK);
+	return new ResponseEntity<Iterable<Practice>>(practiceDao.findAll(), HttpStatus.OK);
     }
 
 }

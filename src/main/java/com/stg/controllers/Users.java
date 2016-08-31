@@ -60,6 +60,14 @@ public class Users implements ResourceProcessor<RepositorySearchesResource>, Res
     @Autowired
     private MailHelper mailHelper;
 
+    /**
+     * Call to add a user. If the user already exists, it will just use the existing record to add the new start date
+     *
+     * @param NewUser
+     *            newUser
+     * @return User
+     * @throws Exception
+     */
     @RequestMapping(value = "/add-user", method = RequestMethod.POST)
     public ResponseEntity<Resource<User>> getAllUsers(@RequestBody NewUser newUser) throws Exception {
 	if (newUser == null || newUser.getEmail() == null || newUser.getEmail().trim().equals("")) {
@@ -153,6 +161,9 @@ public class Users implements ResourceProcessor<RepositorySearchesResource>, Res
 	return resource;
     }
 
+    /**
+     * Adds the new connection points for the API
+     */
     @Override
     public RepositorySearchesResource process(RepositorySearchesResource resource) {
 	LinkBuilder link = entityLinks.linkFor(User.class, "add-user");
