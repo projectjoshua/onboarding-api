@@ -117,6 +117,10 @@ public class Users implements ResourceProcessor<RepositorySearchesResource>, Res
 
 	    // Add the profile to the user, that way we don't need to get the user again
 	    Set<Profile> profileSet = new HashSet<Profile>();
+	    if (user.getProfiles() != null && user.getProfiles().size() > 0) {
+		profileSet.addAll(user.getProfiles());
+	    }
+
 	    profileSet.add(profile);
 
 	    user.setProfiles(profileSet);
