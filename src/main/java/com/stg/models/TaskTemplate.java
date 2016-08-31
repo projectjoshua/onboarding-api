@@ -24,8 +24,13 @@ public class TaskTemplate {
     @JoinColumn(name = "category_id")
     private TaskCategory category;
 
-    @Column(name = "day_count")
-    private int dayCount;
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private Position position;
+
+    @ManyToOne
+    @JoinColumn(name = "practice_id")
+    private Practice practice;
 
     public long getId() {
 	return id;
@@ -51,17 +56,25 @@ public class TaskTemplate {
 	this.category = category;
     }
 
-    public int getDayCount() {
-	return dayCount;
+    public Position getPosition() {
+	return position;
     }
 
-    public void setDayCount(int dayCount) {
-	this.dayCount = dayCount;
+    public void setPosition(Position position) {
+	this.position = position;
+    }
+
+    public Practice getPractice() {
+	return practice;
+    }
+
+    public void setPractice(Practice practice) {
+	this.practice = practice;
     }
 
     @Override
     public String toString() {
-	return "TaskTemplate [id=" + id + ", task=" + task + ", category=" + category + ", dayCount=" + dayCount + "]";
+	return "TaskTemplate [id=" + id + ", task=" + task + ", category=" + category + ", position=" + position + ", practice=" + practice + "]";
     }
 
 }

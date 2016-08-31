@@ -11,10 +11,10 @@ import com.stg.models.Task;
 public interface TaskDao extends CrudRepository<Task, String> {
 
     /**
-     * Retrieves all tasks for a specific user
+     * Retrieves all tasks for a specific profile
      *
-     * @param userId
+     * @param profileId
      * @return List<Task>
      */
-    public List<Task> findByUserIdEquals(long userId);
+    public List<Task> findByProfileIdEquals(long profileId);
 }

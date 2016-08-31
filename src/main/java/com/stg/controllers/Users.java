@@ -30,11 +30,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.stg.daos.PositionDao;
 import com.stg.daos.PracticeDao;
 import com.stg.daos.ProfileDao;
+import com.stg.daos.TaskTemplateDao;
 import com.stg.daos.UserDao;
 import com.stg.dtos.NewUser;
 import com.stg.exceptions.InvalidParameterException;
 import com.stg.helpers.MailHelper;
 import com.stg.models.Profile;
+import com.stg.models.TaskTemplate;
 import com.stg.models.User;
 
 @BasePathAwareController
@@ -53,6 +55,9 @@ public class Users implements ResourceProcessor<RepositorySearchesResource>, Res
 
     @Autowired
     private ProfileDao profileDao;
+
+    @Autowired
+    private TaskTemplateDao taskTemplateDao;
 
     @Autowired
     private EntityLinks entityLinks;
@@ -132,6 +137,20 @@ public class Users implements ResourceProcessor<RepositorySearchesResource>, Res
 	    profileSet.add(profile);
 
 	    user.setProfiles(profileSet);
+
+	    // TODO: Add tasks for this profile
+	    List<TaskTemplate> taskTemplateList = new ArrayList<TaskTemplate>();
+	    taskTemplateList.addAll(taskTemplateDao.findByPositionIdIsNull());
+
+	    if (user.getPosition() != null) {
+		taskTemplateList.addAll(taskTemplateDao.findByPositionIdAndPracticeIdIsNull(user.getPosition().getId()));
+
+		if (user.getPractice() != null) {
+		    taskTemplateList.addAll(taskTemplateDao.findByPositionIdAndPracticeId(user.getPosition().getId(), user.getPractice().getId()));
+		}
+	    }
+
+	    // TODO: Convert Task Templates to tasks for the user
 	} else {
 	    // TODO: Find out how we want to handle updating previous profiles
 	}

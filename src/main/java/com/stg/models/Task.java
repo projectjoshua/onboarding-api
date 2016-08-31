@@ -22,8 +22,8 @@ public class Task {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "profile_id")
+    private Profile profile;
 
     @Column(name = "task")
     private String task;
@@ -32,8 +32,9 @@ public class Task {
     @JoinColumn(name = "category_id")
     private TaskCategory category;
 
-    @Column(name = "day_count")
-    private int dayCount;
+    @Column(name = "task_date")
+    @Temporal(TemporalType.DATE)
+    private Date taskDate;
 
     @Column(name = "completion_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -47,12 +48,12 @@ public class Task {
 	this.id = id;
     }
 
-    public User getUser() {
-	return user;
+    public Profile getProfile() {
+	return profile;
     }
 
-    public void setUser(User user) {
-	this.user = user;
+    public void setProfile(Profile profile) {
+	this.profile = profile;
     }
 
     public String getTask() {
@@ -71,12 +72,12 @@ public class Task {
 	this.category = category;
     }
 
-    public int getDayCount() {
-	return dayCount;
+    public Date getTaskDate() {
+	return taskDate;
     }
 
-    public void setDayCount(int dayCount) {
-	this.dayCount = dayCount;
+    public void setTaskDate(Date taskDate) {
+	this.taskDate = taskDate;
     }
 
     public Date getCompletionDate() {
@@ -89,7 +90,7 @@ public class Task {
 
     @Override
     public String toString() {
-	return "Task [id=" + id + ", user=" + user + ", task=" + task + ", category=" + category + ", dayCount=" + dayCount + ", completionDate=" + completionDate + "]";
+	return "Task [id=" + id + ", profile=" + profile + ", task=" + task + ", category=" + category + ", taskDate=" + taskDate + ", completionDate=" + completionDate + "]";
     }
 
 }

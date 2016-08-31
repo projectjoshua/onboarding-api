@@ -18,8 +18,8 @@ public class TaskCategory {
     @Column(name = "category")
     private String category;
 
-    @Column(name = "day_count")
-    private int dayCount;
+    @Column(name = "display_order")
+    private int displayOrder;
 
     public long getId() {
 	return id;
@@ -37,17 +37,17 @@ public class TaskCategory {
 	this.category = category;
     }
 
-    public int getDayCount() {
-	return dayCount;
+    public int getDisplayOrder() {
+	return displayOrder;
     }
 
-    public void setDayCount(int dayCount) {
-	this.dayCount = dayCount;
+    public void setDisplayOrder(int displayOrder) {
+	this.displayOrder = displayOrder;
     }
 
     @Override
     public String toString() {
-	return "TaskCategory [id=" + id + ", category=" + category + ", dayCount=" + dayCount + "]";
+	return "TaskCategory [id=" + id + ", category=" + category + ", displayOrder=" + displayOrder + "]";
     }
 
 }
