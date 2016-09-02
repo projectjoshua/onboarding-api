@@ -9,8 +9,16 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import com.stg.models.Profile;
 import com.stg.models.User;
 
-@RepositoryRestResource(exported = false)
-public interface ProfileDao extends CrudRepository<Profile, String> {
+@RepositoryRestResource(exported = true)
+public interface ProfileDao extends CrudRepository<Profile, Long> {
+
+    /**
+     * Retrieves the number of profiles for a specific user
+     *
+     * @param userId
+     * @return Long
+     */
+    public Long countByUserIdEquals(long userId);
 
     /**
      * Finds a currently open profile for a user
@@ -27,12 +35,4 @@ public interface ProfileDao extends CrudRepository<Profile, String> {
      * @return List<User>
      */
     public List<User> findUsersByStartingDate(Date startDate);
-
-    /**
-     * Retrieves the number of profiles for a specific user
-     *
-     * @param userId
-     * @return Long
-     */
-    public Long countByUserIdEquals(long userId);
 }
