@@ -1,6 +1,7 @@
 package com.stg.models;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -18,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.data.rest.core.annotation.RestResource;
+
 @Entity
 @Table(name = "tasks")
 @NamedQueries({ @NamedQuery(name = "Task.findByProfileId", query = "FROM Task WHERE profile.id = ?1 ORDER BY task.category.displayOrder, task.id") })
@@ -29,6 +32,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "profile_id")
+    @RestResource(exported = false)
     private Profile profile;
 
     @Column(name = "task")
@@ -49,6 +53,9 @@ public class Task {
     @OneToMany
     @JoinTable(name = "tasks_labels_map", joinColumns = @JoinColumn(name = "task_id"), inverseJoinColumns = @JoinColumn(name = "label_id"))
     private Set<TaskLabel> labels;
+
+    @OneToMany(mappedBy = "task")
+    private List<TaskComment> comments;
 
     public long getId() {
 	return id;
@@ -106,10 +113,18 @@ public class Task {
 	this.labels = labels;
     }
 
+    public List<TaskComment> getComments() {
+	return comments;
+    }
+
+    public void setComments(List<TaskComment> comments) {
+	this.comments = comments;
+    }
+
     @Override
     public String toString() {
 	return "Task [id=" + id + ", profile=" + profile + ", task=" + task + ", category=" + category + ", taskDate=" + taskDate + ", completionDate=" + completionDate
-		+ ", labels=" + labels + "]";
+		+ ", labels=" + labels + ", comments=" + comments + "]";
     }
 
 }

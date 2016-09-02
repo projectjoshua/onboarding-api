@@ -8,7 +8,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.stg.models.Task;
 
-@RepositoryRestResource(exported = false, path = "tasks", collectionResourceRel = "tasks")
+@RepositoryRestResource(exported = true, path = "tasks", collectionResourceRel = "tasks")
 public interface TaskDao extends CrudRepository<Task, Long> {
 
     /**
