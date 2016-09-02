@@ -1,6 +1,7 @@
 package com.stg.models;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,9 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,6 +45,10 @@ public class Task {
     @Column(name = "completion_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date completionDate;
+
+    @OneToMany
+    @JoinTable(name = "tasks_labels_map", joinColumns = @JoinColumn(name = "task_id"), inverseJoinColumns = @JoinColumn(name = "label_id"))
+    private Set<TaskLabel> labels;
 
     public long getId() {
 	return id;
@@ -91,9 +98,18 @@ public class Task {
 	this.completionDate = completionDate;
     }
 
+    public Set<TaskLabel> getLabels() {
+	return labels;
+    }
+
+    public void setLabels(Set<TaskLabel> labels) {
+	this.labels = labels;
+    }
+
     @Override
     public String toString() {
-	return "Task [id=" + id + ", profile=" + profile + ", task=" + task + ", category=" + category + ", taskDate=" + taskDate + ", completionDate=" + completionDate + "]";
+	return "Task [id=" + id + ", profile=" + profile + ", task=" + task + ", category=" + category + ", taskDate=" + taskDate + ", completionDate=" + completionDate
+		+ ", labels=" + labels + "]";
     }
 
 }

@@ -1,12 +1,16 @@
 package com.stg.models;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -31,6 +35,10 @@ public class TaskTemplate {
     @ManyToOne
     @JoinColumn(name = "practice_id")
     private Practice practice;
+
+    @OneToMany
+    @JoinTable(name = "templates_labels_map", joinColumns = @JoinColumn(name = "template_id"), inverseJoinColumns = @JoinColumn(name = "label_id"))
+    private Set<TaskLabel> labels;
 
     public long getId() {
 	return id;
@@ -72,9 +80,17 @@ public class TaskTemplate {
 	this.practice = practice;
     }
 
+    public Set<TaskLabel> getLabels() {
+	return labels;
+    }
+
+    public void setLabels(Set<TaskLabel> labels) {
+	this.labels = labels;
+    }
+
     @Override
     public String toString() {
-	return "TaskTemplate [id=" + id + ", task=" + task + ", category=" + category + ", position=" + position + ", practice=" + practice + "]";
+	return "TaskTemplate [id=" + id + ", task=" + task + ", category=" + category + ", position=" + position + ", practice=" + practice + ", labels=" + labels + "]";
     }
 
 }
