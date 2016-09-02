@@ -55,7 +55,8 @@ public class Users implements ResourceProcessor<RepositorySearchesResource>, Res
 	    Resource<User> resource = toResource(user);
 	    return new ResponseEntity<>(resource, HttpStatus.OK);
 	} catch (Exception e) {
-	    // TODO: Verify how we want to handle errors with Bryan
+	    log.error("Failure in Users.getAllUsers", e);
+
 	    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
     }

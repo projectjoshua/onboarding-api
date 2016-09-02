@@ -53,9 +53,7 @@ public class MailUtil {
     }
 
     /**
-     * Sends the mail to the specified address using the subject, template name,
-     * and parameters to be passed to the template. The templates are found in
-     * the src/main/resources/templates directory
+     * Sends the mail to the specified address using the subject, template name, and parameters to be passed to the template. The templates are found in the src/main/resources/templates directory
      *
      * @param toAddress
      * @param subject
@@ -63,22 +61,16 @@ public class MailUtil {
      * @param params
      * @throws MessagingException
      */
-    public void sendMail(String toAddress, String subject, String templateName,
-	    Map<String, Object> params) throws MessagingException {
+    public void sendMail(String toAddress, String subject, String templateName, Map<String, Object> params) throws MessagingException {
 	MimeMessagePreparator preparator = new MimeMessagePreparator() {
 	    @Override
 	    public void prepare(MimeMessage mimeMessage) throws Exception {
 		MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
 		message.setTo(toAddress);
-		message.setFrom(((JavaMailSenderImpl) MailUtil.this.mailSender)
-			.getUsername());
+		message.setFrom("onboarding@stgconsulting.com");
 		message.setSubject(subject);
 
-		String text = FreeMarkerTemplateUtils
-			.processTemplateIntoString(
-				MailUtil.this.freemarkerEngine.getTemplate(
-					"/" + templateName + ".ftl", "UTF-8"),
-				params);
+		String text = FreeMarkerTemplateUtils.processTemplateIntoString(MailUtil.this.freemarkerEngine.getTemplate("/" + templateName + ".ftl", "UTF-8"), params);
 
 		message.setText(text, true);
 	    }

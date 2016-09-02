@@ -53,7 +53,7 @@ public class EmailTasks {
 
 		this.userDao.save(user);
 	    } catch (Exception e) {
-		e.printStackTrace();
+		log.error("Failure sending email for user: " + user.getId(), e);
 
 		// TODO: Send a notification to the admins that we were unable to send an email to a specific user
 	    }
