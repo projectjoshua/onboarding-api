@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.stg.daos.ProfileDao;
+import com.stg.daos.UserDao;
 import com.stg.helpers.MailHelper;
 import com.stg.models.User;
 
@@ -24,6 +25,9 @@ public class EmailTasks {
     @Autowired
     private ProfileDao profileDao;
 
+    @Autowired
+    private UserDao userDao;
+
     /**
      * Sends the welcome emails to all of the users that have a starting date of today
      */
@@ -32,7 +36,7 @@ public class EmailTasks {
 	log.info("Starting sendOnboardingEmails");
 
 	// Find all users that need onboarding emails
-	List<User> userList = profileDao.findUsersByStartingDate(new Date());
+	List<User> userList = profileDao.findUnwelcomedUsersByStartingDate(new Date());
 
 	// Send the onboarding email for each user
 	for (User user : userList) {
@@ -44,6 +48,10 @@ public class EmailTasks {
 		boolean isExistingUser = userCount > 1;
 
 		mailHelper.sendWelcomeEmail(user, isExistingUser);
+
+		user.setWelcomed(true);
+
+		this.userDao.save(user);
 	    } catch (Exception e) {
 		e.printStackTrace();
 

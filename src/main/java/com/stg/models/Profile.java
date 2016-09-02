@@ -1,7 +1,7 @@
 package com.stg.models;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,7 +20,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "profiles")
 @NamedQueries({
-	@NamedQuery(name = "Profile.findUsersByStartingDate", query = "SELECT prof.user FROM Profile prof WHERE prof.startDate = ?1") })
+	@NamedQuery(name = "Profile.findUnwelcomedUsersByStartingDate", query = "SELECT prof.user FROM Profile prof WHERE prof.startDate <= ?1 AND prof.user.isWelcomed = false") })
 public class Profile {
 
     @Id
@@ -40,7 +40,7 @@ public class Profile {
     private Date endDate;
 
     @OneToMany(mappedBy = "profile")
-    private Set<Task> tasks;
+    private List<Task> tasks;
 
     public Date getEndDate() {
 	return this.endDate;
@@ -54,7 +54,7 @@ public class Profile {
 	return this.startDate;
     }
 
-    public Set<Task> getTasks() {
+    public List<Task> getTasks() {
 	return this.tasks;
     }
 
@@ -74,7 +74,7 @@ public class Profile {
 	this.startDate = startDate;
     }
 
-    public void setTasks(Set<Task> tasks) {
+    public void setTasks(List<Task> tasks) {
 	this.tasks = tasks;
     }
 
@@ -84,8 +84,6 @@ public class Profile {
 
     @Override
     public String toString() {
-	return "Profile [id=" + this.id + ", user=" + this.user + ", startDate="
-		+ this.startDate + ", endDate=" + this.endDate + ", tasks="
-		+ this.tasks + "]";
+	return "Profile [id=" + this.id + ", user=" + this.user + ", startDate=" + this.startDate + ", endDate=" + this.endDate + ", tasks=" + this.tasks + "]";
     }
 }

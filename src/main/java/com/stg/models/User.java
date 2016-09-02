@@ -2,6 +2,7 @@ package com.stg.models;
 
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -44,6 +45,10 @@ public class User {
     @RestResource(exported = true)
     @OneToMany(mappedBy = "user")
     private Set<Profile> profiles;
+
+    @RestResource(exported = false)
+    @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
+    private boolean isWelcomed;
 
     public User() {
 
@@ -109,8 +114,17 @@ public class User {
 	this.profiles = profiles;
     }
 
+    public boolean isWelcomed() {
+	return isWelcomed;
+    }
+
+    public void setWelcomed(boolean isWelcomed) {
+	this.isWelcomed = isWelcomed;
+    }
+
     @Override
     public String toString() {
-	return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", position=" + position + ", practice=" + practice + ", profiles=" + profiles + "]";
+	return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", position=" + position + ", practice=" + practice + ", profiles="
+		+ profiles + ", isWelcomed=" + isWelcomed + "]";
     }
 }

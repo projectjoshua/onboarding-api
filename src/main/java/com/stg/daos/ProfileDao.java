@@ -29,10 +29,10 @@ public interface ProfileDao extends CrudRepository<Profile, Long> {
     public List<Profile> findByEndDateIsNullAndUserIdEquals(long userId);
 
     /**
-     * Finds all users where the starting date is a specific date
+     * Finds all users where the starting date is a specific date and haven't been welcomed, yet
      *
      * @param startDate
      * @return List<User>
      */
-    public List<User> findUsersByStartingDate(Date startDate);
+    public List<User> findUnwelcomedUsersByStartingDate(Date startDate);
 }
